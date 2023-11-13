@@ -1,0 +1,12 @@
+Options +FollowSymLinks
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^cliente/([0-9]+) rest/cliente.php?id=$1 [L,QSA]
+RewriteRule ^cliente rest/cliente.php [L,QSA]
+RewriteRule ^compra/([0-9]+) rest/compra.php?id=$1 [L,QSA]
+RewriteRule ^compra rest/compra.php [L,QSA]
+RewriteRule ^produtoscompra/([0-9]+) rest/produtosCompra.php?id=$1 [L,QSA]
+RewriteRule ^produtoscompra rest/produtosCompra.php [L,QSA]
+RewriteRule ^produto/([0-9]+) rest/produto.php?id=$1 [L,QSA]
+RewriteRule ^produto rest/produto.php [L,QSA]

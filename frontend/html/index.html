@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazing</title>
+    <script src="../javascript/webserviceConexao.js" defer></script>
+</head>
+
+<body>
+    <h1>Amazing - Loja virtual</h1>
+    <div>
+        <div>
+            <h2>Cliente</h2>
+            <div>
+                <div>
+                    <h3>Listar todos os clientes</h3>
+                    <button class="listarTodosCliente">Listar</button>
+                </div>
+                <div>
+                    <!-- Aqui fica a lista de clientes -->
+                </div>
+            </div>
+            <div>
+                <h3>Listar um cliente especifico</h3>
+                <form>
+                    <label for="idCliente">ID do cliente:</label><br>
+                    <select name="idCliente">
+
+                    </select><br>
+                    <button type="button" class="listarClienteEspecifico">Listar</button>
+                </form>
+            </div>
+            <div>
+                <h3>Inserir um cliente</h3>
+                <form>
+                    <label for="nome">Nome:</label><br>
+                    <input type="text" name="nome" required><br>
+                    <label for="nome_usuario">Nome de usuario:</label><br>
+                    <input type="text" name="nome_usuario" required><br>
+                    <label for="estado">Estado abreviado:</label><br>
+                    <input type="text" name="estado" required><br>
+                    <label for="bairro">Bairro:</label><br>
+                    <input type="text" name="bairro" required><br>
+                    <label for="rua">Rua:</label><br>
+                    <input type="text" name="rua" required><br>
+                    <label for="nro_cartao">Numero do cartão:</label><br>
+                    <input type="text" name="nro_cartao" required><br>
+                    <label for="nro_seguranca">Numero de segurança do cartão:</label><br>
+                    <input type="text" name="nro_seguranca" required><br>
+                    <label for="nome_cartao">Nome do cartão:</label><br>
+                    <input type="text" name="nome_cartao" required><br>
+                    <label for="data_validade_cartao">Data de validade do cartão:</label><br>
+                    <input type="text" name="data_validade_cartao" required><br>
+                    <button type="button" class="inserirCliente">Enviar</button>
+                </form>
+            </div>
+        </div>
+        <div>
+            <h2>Produto</h2>
+            <div>
+                <h3>Listar todos os produtos</h3>
+                <button class="listarTodosProdutos">Listar</button>
+            </div>
+            <div>
+                <h3>Listar um produto especifico</h3>
+                <form>
+                    <label for="idProduto">ID do produto:</label><br>
+                    <select name="idProduto">
+
+                    </select><br>
+                    <button type="button" class="listarProdutoEspecifico">Listar</button>
+                </form>
+            </div>
+            <div>
+                <h3>Inserir um produto</h3>
+                <form>
+                    <label for="nome">Nome:</label><br>
+                    <input type="text" name="nome" required><br>
+                    <label for="qtdEstoque">Quantidade no estoque:</label><br>
+                    <input type="number" name="qtdEstoque" required><br>
+                    <label for="preco">Preço:</label><br>
+                    <input type="number" name="preco" required step="0.01"><br>
+                    <label for="descricao">Descrição:</label><br>
+                    <textarea name="descricao" cols="30" rows="10"></textarea><br>
+                    <button type="button" class="inserirProduto">Enviar</button>
+                </form>
+            </div>
+        </div>
+        <div>
+            <h2>Compra</h2>
+            <div>
+                <h3>Listar todos as compras</h3>
+                <button class="listarTodasCompras">Listar</button>
+            </div>
+            <div>
+                <h3>Listar uma compra especifica</h3>
+                <form>
+                    <label for="idCompra">ID da compra:</label><br>
+                    <select name="idCompra">
+
+                    </select><br>
+                    <button type="button" class="listarCompraEspecifica">Listar</button>
+                </form>
+            </div>
+            <div>
+                <h3>Inserir uma compra</h3>
+                <form>
+                    <label for="idCliente">ID do cliente:</label><br>
+                    <select name="idCliente">
+
+                    </select><br>
+                    <label for="dataCompra">Data da compra:</label><br>
+                    <input type="date" name="dataCompra"><br>
+                    <button type="button" class="inserirCompra">Enviar</button>
+                </form>
+            </div>
+        </div>
+        <div>
+            <h2>Produtos - Compra</h2>
+            <div>
+                <h3>Listar todos os Produtos - Compra</h3>
+                <button class="listarTodosProdutosCompra">Listar</button>
+            </div>
+            <div>
+                <h3>Listar um Produtos - Compra especifico</h3>
+                <form>
+                    <label for="idPc">ID Produtos - Compra:</label><br>
+                    <select name="idPc">
+
+                    </select><br>
+                    <button type="button" class="listarProdutoCompraEspecifico">Listar</button>
+                </form>
+            </div>
+            <div>
+                <h3>Inserir um Produtos - Compra</h3>
+                <form>
+                    <label for="idCompra">ID da compra:</label><br>
+                    <select name="idCompra" required>
+
+                    </select><br>
+                    <label for="idProduto">ID do produto</label><br>
+                    <select name="idProduto" required>
+
+                    </select><br>
+                    <label for="qtdProduto">Quantidade de produtos:</label><br>
+                    <input type="number" name="qtdProduto" required><br>
+                    <button type="button" class="inserirProdutoCompra">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
