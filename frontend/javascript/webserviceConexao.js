@@ -680,6 +680,17 @@ function inserirCliente(nome, nome_usuario, estado, cidade, bairro, rua, nro_car
     return (addCliente(nome, nome_usuario, estado, cidade, bairro, rua, nro_cartao, nro_seguranca, nome_cartao, data_validade_cartao));
 }
 
+function inserirProduto(nome, qtdEstoque, preco, descricao){
+    return (addProduto(nome, qtdEstoque, preco, descricao));
+}
+
+function inserirCompra(idCliente, dataCompra){
+    return (addCompra(idCliente, dataCompra));
+}
+
+function inserirProdutosCompra(idCompra, idProduto, qtdProduto){
+    return (addProdutosCompra(idCompra, idProduto, qtdProduto));
+}
 
 ///////Botões
 let botaoInserirCliente = document.querySelector(".inserirCliente");
@@ -697,4 +708,55 @@ botaoInserirCliente.addEventListener("click", function (e) {
         }
     }
     inserirCliente(valores[0], valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], valores[7], valores[8])
+});
+
+let botaoInserirProduto = document.querySelector(".inserirProduto");
+botaoInserirProduto.addEventListener("click", function (e) {
+    let elemento = e.target;
+    let paiElemento = elemento.parentElement;
+    let filhos = paiElemento.children;
+    let campos = ["nome", "qtdEstoque", "preco", "descricao"];
+    valores = [];
+    for (valor of filhos) {
+        for (campo of campos) {
+            if (valor.name == campo) {
+                valores.push(valor.value);
+            }
+        }
+    }
+    inserirProduto(valores[0], valores[1], valores[2], valores[3]);
+});
+
+let botaoInserirCompra = document.querySelector(".inserirCompra");
+botaoInserirCompra.addEventListener("click", function (e) {
+    let elemento = e.target;
+    let paiElemento = elemento.parentElement;
+    let filhos = paiElemento.children;
+    let campos = ["idCliente", "dataCompra"];
+    valores = [];
+    for (valor of filhos) {
+        for (campo of campos) {
+            if (valor.name == campo) {
+                valores.push(valor.value);
+            }
+        }
+    }
+    inserirCompra(valores[0], valores[1])
+});
+
+let botaoInserirProdutoCompra = document.querySelector(".inserirProdutoCompra");
+botaoInserirProdutoCompra.addEventListener("click", function (e) {
+    let elemento = e.target;
+    let paiElemento = elemento.parentElement;
+    let filhos = paiElemento.children;
+    let campos = ["idCompra", "idProduto", "qtdProduto"];
+    valores = [];
+    for (valor of filhos) {
+        for (campo of campos) {
+            if (valor.name == campo) {
+                valores.push(valor.value);
+            }
+        }
+    }
+    inserirProdutosCompra(valores[0], valores[1], valores[2]);
 });
