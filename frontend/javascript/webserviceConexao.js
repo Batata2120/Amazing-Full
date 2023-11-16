@@ -57,7 +57,7 @@ function getCompras() {
 }
 function getProdutosCompras() {
     return (
-        fetch("https://localhost/backend/produtocompra").then(resposta => {
+        fetch("https://localhost/backend/produtoscompra").then(resposta => {
             if (!resposta.ok) {
                 throw new Error("Houve algum erro");
             }
@@ -132,7 +132,7 @@ function getCompra(id) {
 }
 function getProdutosCompra(id) {
     return (
-        fetch("https://localhost/backend/produtocompra/" + id).then(resposta => {
+        fetch("https://localhost/backend/produtoscompra/" + id).then(resposta => {
             if (!resposta.ok) {
                 throw new Error("Houve algum erro");
             }
@@ -282,7 +282,7 @@ function addProdutosCompra(idCompra, idProduto, qtdProduto) {
         },
     }
     return (
-        fetch("https://localhost/backend/produtocompra", options).then(resposta => {
+        fetch("https://localhost/backend/produtoscompra", options).then(resposta => {
             if (!resposta.ok) {
                 throw new Error("Houve algum erro");
             }
@@ -431,7 +431,7 @@ function putProdutosCompra(id, idCompra, idProduto, qtdProduto) {
         },
     }
     return (
-        fetch("https://localhost/backend/produtocompra/" + id, options).then(resposta => {
+        fetch("https://localhost/backend/produtoscompra/" + id, options).then(resposta => {
             if (!resposta.ok) {
                 throw new Error("Houve algum erro");
             }
@@ -517,7 +517,7 @@ function delProdutosCompra(id) {
         method: "DELETE",
     }
     return (
-        fetch("https://localhost/backend/produtocompra/" + id, options).then(resposta => {
+        fetch("https://localhost/backend/produtoscompra/" + id, options).then(resposta => {
             if (!resposta.ok) {
                 throw new Error("Houve algum erro");
             }
@@ -545,13 +545,13 @@ function delProdutosCompra(id) {
 //Função listar
 ///////////////
 
-function listarClientes(objeto, styleDiv = "") {
+function listarClientes(objeto, styleDiv = "display: flex; flex-direction: row; gap: 10px;") {
     let clientes = getClientes();
     console.log(clientes);
     clientes.then(lista => {
         console.log(lista);
-        while (objeto.nextElementSibling.children.length > 0) {
-            objeto.nextElementSibling.removeChild(objeto.nextElementSibling.children[objeto.nextElementSibling.children.length - 1]);
+        while (objeto.children.length > 0) {
+            objeto.removeChild(objeto.children[objeto.children.length - 1]);
         }
         for (elemento of lista) {
             let cliente = document.createElement("div");
@@ -559,25 +559,80 @@ function listarClientes(objeto, styleDiv = "") {
             let chaves = Object.keys(elemento);
             for (chave of chaves) {
                 let dive = document.createElement("div");
+                dive.className = chave;
                 dive.innerText = elemento[chave];
                 vetor.push(dive);
             }
             for (valor of vetor) {
                 cliente.append(valor);
             }
+            let botaoDeletar = document.createElement("button");
+            let botaoEditar = document.createElement("button");
+            botaoDeletar.innerText = "Deletar";
+            botaoEditar.innerText = "Editar";
+            botaoDeletar.addEventListener("click", function (e){
+                let elemento = e.target;
+                let paiElemento = elemento.parentElement;
+                let filhos = paiElemento.children;
+                let id
+                for(filho of filhos){
+                    if(filho.className == "id"){
+                        id = filho.innerText
+                    }
+                }
+                removerCliente(id).then(response =>{
+                    listarClientes(paiElemento.parentElement);
+                });
+                
+            })
+            botaoEditar.addEventListener("click", function (e){
+                let filhos = e.target.parentElement.children;
+                let formulario = document.createElement("form");
+                let tipoCampo = ["text", "text", "text", "text", "text", "text", "text", "text", "text"];
+                let mensagemCampo = ["ID do usuario:","Nome:", "Nome de usuario:", "Estado abreviado:","Cidade:", "Bairro:", "Rua:", "Numero do cartão:", "Numero de segurança do cartão:", "Nome do cartão:", "Data de validade do cartão:"];
+                let contador = 0;
+                let divID = document.createElement("div");
+                divID.className = filhos[0].className;
+                divID.innerText = filhos[0].innerText;
+                divID.hidden = true;
+                formulario.append(divID);
+                for(filho of filhos){
+                    if(filho.tagName != "BUTTON" && filho.className != "id"){
+                        let mensagem = document.createElement("label");
+                        let campo = document.createElement("input");
+                        mensagem.for = filho.className;
+                        mensagem.innerText = mensagemCampo[contador];
+                        campo.name = filho.className;
+                        campo.type = tipoCampo[contador];
+                        campo.value = filho.innerText;
+                        formulario.append(mensagem);
+                        formulario.append(document.createElement("br"));
+                        formulario.append(campo);
+                        formulario.append(document.createElement("br"));
+                        contador += 1;
+                    }
+                }
+                let elementoPai = e.target.parentElement;
+                while (elementoPai.children.length > 0) {
+                    elementoPai.removeChild(elementoPai.children[elementoPai.children.length - 1]);
+                }
+                elementoPai.append(formulario);
+            })
+            cliente.append(botaoDeletar);
+            cliente.append(botaoEditar);
             cliente.style = styleDiv;
-            objeto.nextElementSibling.append(cliente);
+            objeto.append(cliente);
         }
     })
 }
 
-function listarProdutos(objeto, styleDiv = "") {
+function listarProdutos(objeto, styleDiv = "display: flex; flex-direction: row; gap: 10px;") {
     let produtos = getProdutos();
     console.log(produtos);
     produtos.then(lista => {
         console.log(lista);
-        while (objeto.nextElementSibling.children.length > 0) {
-            objeto.nextElementSibling.removeChild(objeto.nextElementSibling.children[objeto.nextElementSibling.children.length - 1]);
+        while (objeto.children.length > 0) {
+            objeto.removeChild(objeto.children[objeto.children.length - 1]);
         }
         for (elemento of lista) {
             let produto = document.createElement("div");
@@ -586,24 +641,46 @@ function listarProdutos(objeto, styleDiv = "") {
             for (chave of chaves) {
                 let dive = document.createElement("div");
                 dive.innerText = elemento[chave];
+                dive.className = chave;
                 vetor.push(dive);
             }
             for (valor of vetor) {
                 produto.append(valor);
             }
+            let botaoDeletar = document.createElement("button");
+            let botaoEditar = document.createElement("button");
+            botaoDeletar.innerText = "Deletar";
+            botaoEditar.innerText = "Editar";
+            botaoDeletar.addEventListener("click", function (e){
+                let elemento = e.target;
+                let paiElemento = elemento.parentElement;
+                let filhos = paiElemento.children;
+                let id
+                for(filho of filhos){
+                    if(filho.className == "id"){
+                        id = filho.innerText
+                    }
+                }
+                removerProduto(id).then(response =>{
+                    listarProdutos(paiElemento.parentElement);
+                });
+                
+            })
+            produto.append(botaoDeletar);
+            produto.append(botaoEditar);
             produto.style = styleDiv;
-            objeto.nextElementSibling.append(produto);
+            objeto.append(produto);
         }
     })
 }
 
-function listarCompras(objeto, styleDiv = "") {
+function listarCompras(objeto, styleDiv = "display: flex; flex-direction: row; gap: 10px;") {
     let compras = getCompras();
     console.log(compras);
     compras.then(lista => {
         console.log(lista);
-        while (objeto.nextElementSibling.children.length > 0) {
-            objeto.nextElementSibling.removeChild(objeto.nextElementSibling.children[objeto.nextElementSibling.children.length - 1]);
+        while (objeto.children.length > 0) {
+            objeto.removeChild(objeto.children[objeto.children.length - 1]);
         }
         for (elemento of lista) {
             let compra = document.createElement("div");
@@ -612,24 +689,46 @@ function listarCompras(objeto, styleDiv = "") {
             for (chave of chaves) {
                 let dive = document.createElement("div");
                 dive.innerText = elemento[chave];
+                dive.className = chave;
                 vetor.push(dive);
             }
             for (valor of vetor) {
                 compra.append(valor);
             }
+            let botaoDeletar = document.createElement("button");
+            let botaoEditar = document.createElement("button");
+            botaoDeletar.innerText = "Deletar";
+            botaoEditar.innerText = "Editar";
+            botaoDeletar.addEventListener("click", function (e){
+                let elemento = e.target;
+                let paiElemento = elemento.parentElement;
+                let filhos = paiElemento.children;
+                let id
+                for(filho of filhos){
+                    if(filho.className == "id"){
+                        id = filho.innerText
+                    }
+                }
+                removerCompra(id).then(response =>{
+                    listarCompras(paiElemento.parentElement);
+                });
+                
+            })
+            compra.append(botaoDeletar);
+            compra.append(botaoEditar);
             compra.style = styleDiv;
-            objeto.nextElementSibling.append(compra);
+            objeto.append(compra);
         }
     })
 }
 
-function listarProdutosCompras(objeto, styleDiv = "") {
+function listarProdutosCompras(objeto, styleDiv = "display: flex; flex-direction: row; gap: 10px;") {
     let produtosCompras = getProdutosCompras();
     console.log(produtosCompras);
     produtosCompras.then(lista => {
         console.log(lista);
-        while (objeto.nextElementSibling.children.length > 0) {
-            objeto.nextElementSibling.removeChild(objeto.nextElementSibling.children[objeto.nextElementSibling.children.length - 1]);
+        while (objeto.children.length > 0) {
+            objeto.removeChild(objeto.children[objeto.children.length - 1]);
         }
         for (elemento of lista) {
             let produtosCompra = document.createElement("div");
@@ -638,13 +737,35 @@ function listarProdutosCompras(objeto, styleDiv = "") {
             for (chave of chaves) {
                 let dive = document.createElement("div");
                 dive.innerText = elemento[chave];
+                dive.className = chave;
                 vetor.push(dive);
             }
             for (valor of vetor) {
                 produtosCompra.append(valor);
             }
+            let botaoDeletar = document.createElement("button");
+            let botaoEditar = document.createElement("button");
+            botaoDeletar.innerText = "Deletar";
+            botaoEditar.innerText = "Editar";
+            botaoDeletar.addEventListener("click", function (e){
+                let elemento = e.target;
+                let paiElemento = elemento.parentElement;
+                let filhos = paiElemento.children;
+                let id
+                for(filho of filhos){
+                    if(filho.className == "id"){
+                        id = filho.innerText
+                    }
+                }
+                removerProdutoCompra(id).then(response =>{
+                    listarProdutosCompras(paiElemento.parentElement);
+                });
+                
+            })
+            produtosCompra.append(botaoDeletar);
+            produtosCompra.append(botaoEditar);
             produtosCompra.style = styleDiv;
-            objeto.nextElementSibling.append(produtosCompra);
+            objeto.append(produtosCompra);
         }
     })
 }
@@ -654,22 +775,22 @@ function listarProdutosCompras(objeto, styleDiv = "") {
 let botaoCliente = document.querySelector(".listarTodosCliente");
 botaoCliente.addEventListener("click", function (e) {
     let elemento = e.target;
-    listarClientes(elemento.parentElement);
+    listarClientes(elemento.parentElement.nextElementSibling);
 })
 let botaoProduto = document.querySelector(".listarTodosProdutos");
 botaoProduto.addEventListener("click", function (e) {
     let elemento = e.target;
-    listarProdutos(elemento.parentElement);
+    listarProdutos(elemento.parentElement.nextElementSibling);
 })
 let botaoCompra = document.querySelector(".listarTodasCompras");
 botaoCompra.addEventListener("click", function (e) {
     let elemento = e.target;
-    listarCompras(elemento.parentElement);
+    listarCompras(elemento.parentElement.nextElementSibling);
 })
 let botaoProdutoCompra = document.querySelector(".listarTodosProdutosCompra");
 botaoProdutoCompra.addEventListener("click", function (e) {
     let elemento = e.target;
-    listarProdutosCompras(elemento.parentElement);
+    listarProdutosCompras(elemento.parentElement.nextElementSibling);
 })
 
 ////////////////////
@@ -760,3 +881,29 @@ botaoInserirProdutoCompra.addEventListener("click", function (e) {
     }
     inserirProdutosCompra(valores[0], valores[1], valores[2]);
 });
+
+////////////////
+//Função editar/
+////////////////
+
+
+
+/////////////////
+//Função deletar/
+/////////////////
+
+function removerCliente(id){
+    return(delCliente(id)); 
+}
+
+function removerProduto(id){
+    return(delProduto(id));
+}
+
+function removerCompra(id){
+    return(delCompra(id));
+}
+
+function removerProdutoCompra(id){
+    return(delProdutosCompra(id));
+}
