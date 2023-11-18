@@ -325,6 +325,7 @@ function putCliente(id, nome, nome_usuario, estado, cidade, bairro, rua, nro_car
             "Content-Type": "application/x-www-form-urlencoded"
         },
     }
+    console.log(options);
     return (
         fetch("https://localhost/backend/cliente/" + id, options).then(resposta => {
             if (!resposta.ok) {
@@ -589,7 +590,7 @@ function listarClientes(objeto, styleDiv = "display: flex; flex-direction: row; 
                 let filhos = e.target.parentElement.children;
                 let formulario = document.createElement("form");
                 let tipoCampo = ["text", "text", "text", "text", "text", "text", "text", "text", "text"];
-                let mensagemCampo = ["ID do usuario:","Nome:", "Nome de usuario:", "Estado abreviado:","Cidade:", "Bairro:", "Rua:", "Numero do cartão:", "Numero de segurança do cartão:", "Nome do cartão:", "Data de validade do cartão:"];
+                let mensagemCampo = ["Nome:", "Nome de usuario:", "Estado abreviado:","Cidade:", "Bairro:", "Rua:", "Numero do cartão:", "Numero de segurança do cartão:", "Nome do cartão:", "Data de validade do cartão:"];
                 let contador = 0;
                 let divID = document.createElement("div");
                 divID.className = filhos[0].className;
@@ -612,6 +613,31 @@ function listarClientes(objeto, styleDiv = "display: flex; flex-direction: row; 
                         contador += 1;
                     }
                 }
+                let botaoEnviar = document.createElement("button");
+                let botaoCancelar = document.createElement("button");
+                botaoEnviar.innerText = "Enviar";
+                botaoCancelar.innerText = "Cancelar";
+                botaoEnviar.type = "button";
+                botaoCancelar.type = "button";
+                botaoEnviar.addEventListener("click", function (e){
+                    let paiElemento = e.target.parentElement;
+                    let filhos = paiElemento.children;
+                    let vetorParametros = [filhos[0].innerText];
+                    for(filho of filhos){
+                        if(filho.tagName == "INPUT"){
+                            vetorParametros.push(filho.value);
+                            console.log(vetorParametros);
+                        }
+                    }
+                    editarCliente(vetorParametros[0], vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4], vetorParametros[5], vetorParametros[6], vetorParametros[7], vetorParametros[8], vetorParametros[9], vetorParametros[10], vetorParametros[11]).then(resposta =>{
+                        listarClientes(paiElemento.parentElement.parentElement);
+                    })
+                })
+                botaoCancelar.addEventListener("click", function (e){
+                    listarClientes(e.target.parentElement.parentElement.parentElement);
+                })
+                formulario.append(botaoEnviar);
+                formulario.append(botaoCancelar);
                 let elementoPai = e.target.parentElement;
                 while (elementoPai.children.length > 0) {
                     elementoPai.removeChild(elementoPai.children[elementoPai.children.length - 1]);
@@ -886,7 +912,21 @@ botaoInserirProdutoCompra.addEventListener("click", function (e) {
 //Função editar/
 ////////////////
 
+function editarCliente(id, nome, nome_usuario, estado, cidade, bairro, rua, nro_cartao, nro_seguranca, nome_cartao, data_validade_cartao){
+    return(putCliente(id, nome, nome_usuario, estado, cidade, bairro, rua, nro_cartao, nro_seguranca, nome_cartao, data_validade_cartao));
+}
 
+function editarProduto(id, nome, qtdEstoque, preco, descricao){
+    return(putProduto(id, nome, qtdEstoque, preco, descricao));
+}
+
+function editarCompra(id, idCliente, dataCompra){
+    return(putCompra(id, idCliente, dataCompra));
+}
+
+function editarProdutoCompra(id, idCompra, idProduto, qtdProduto){
+    return(putProdutosCompra(id, idCompra, idProduto, qtdProduto));
+}
 
 /////////////////
 //Função deletar/
