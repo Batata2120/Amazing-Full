@@ -22,7 +22,7 @@ class Cliente
             $stmt = $conexao->prepare("SELECT * FROM cliente WHERE id=?");
             $stmt->execute([$id]);
 
-            return $stmt->fetchAll();
+            return $stmt->fetchAll()[0];
         } catch (Exception $e) {
             return null;
         }

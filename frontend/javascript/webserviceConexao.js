@@ -571,78 +571,25 @@ function listarClientes(objeto, styleDiv = "display: flex; flex-direction: row; 
             let botaoEditar = document.createElement("button");
             botaoDeletar.innerText = "Deletar";
             botaoEditar.innerText = "Editar";
-            botaoDeletar.addEventListener("click", function (e){
+            botaoDeletar.addEventListener("click", function (e) {
                 let elemento = e.target;
                 let paiElemento = elemento.parentElement;
                 let filhos = paiElemento.children;
                 let id
-                for(filho of filhos){
-                    if(filho.className == "id"){
+                for (filho of filhos) {
+                    if (filho.className == "id") {
                         id = filho.innerText
                     }
                 }
-                removerCliente(id).then(response =>{
+                removerCliente(id).then(response => {
                     listarClientes(paiElemento.parentElement);
                 });
-                
+
             })
-            botaoEditar.addEventListener("click", function (e){
-                let filhos = e.target.parentElement.children;
-                let formulario = document.createElement("form");
+            botaoEditar.addEventListener("click", function (e) {
                 let tipoCampo = ["text", "text", "text", "text", "text", "text", "text", "text", "text"];
-                let mensagemCampo = ["Nome:", "Nome de usuario:", "Estado abreviado:","Cidade:", "Bairro:", "Rua:", "Numero do cartão:", "Numero de segurança do cartão:", "Nome do cartão:", "Data de validade do cartão:"];
-                let contador = 0;
-                let divID = document.createElement("div");
-                divID.className = filhos[0].className;
-                divID.innerText = filhos[0].innerText;
-                divID.hidden = true;
-                formulario.append(divID);
-                for(filho of filhos){
-                    if(filho.tagName != "BUTTON" && filho.className != "id"){
-                        let mensagem = document.createElement("label");
-                        let campo = document.createElement("input");
-                        mensagem.for = filho.className;
-                        mensagem.innerText = mensagemCampo[contador];
-                        campo.name = filho.className;
-                        campo.type = tipoCampo[contador];
-                        campo.value = filho.innerText;
-                        formulario.append(mensagem);
-                        formulario.append(document.createElement("br"));
-                        formulario.append(campo);
-                        formulario.append(document.createElement("br"));
-                        contador += 1;
-                    }
-                }
-                let botaoEnviar = document.createElement("button");
-                let botaoCancelar = document.createElement("button");
-                botaoEnviar.innerText = "Enviar";
-                botaoCancelar.innerText = "Cancelar";
-                botaoEnviar.type = "button";
-                botaoCancelar.type = "button";
-                botaoEnviar.addEventListener("click", function (e){
-                    let paiElemento = e.target.parentElement;
-                    let filhos = paiElemento.children;
-                    let vetorParametros = [filhos[0].innerText];
-                    for(filho of filhos){
-                        if(filho.tagName == "INPUT"){
-                            vetorParametros.push(filho.value);
-                            console.log(vetorParametros);
-                        }
-                    }
-                    editarCliente(vetorParametros[0], vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4], vetorParametros[5], vetorParametros[6], vetorParametros[7], vetorParametros[8], vetorParametros[9], vetorParametros[10], vetorParametros[11]).then(resposta =>{
-                        listarClientes(paiElemento.parentElement.parentElement);
-                    })
-                })
-                botaoCancelar.addEventListener("click", function (e){
-                    listarClientes(e.target.parentElement.parentElement.parentElement);
-                })
-                formulario.append(botaoEnviar);
-                formulario.append(botaoCancelar);
-                let elementoPai = e.target.parentElement;
-                while (elementoPai.children.length > 0) {
-                    elementoPai.removeChild(elementoPai.children[elementoPai.children.length - 1]);
-                }
-                elementoPai.append(formulario);
+                let mensagemCampo = ["Nome:", "Nome de usuario:", "Estado abreviado:", "Cidade:", "Bairro:", "Rua:", "Numero do cartão:", "Numero de segurança do cartão:", "Nome do cartão:", "Data de validade do cartão:"];
+                funcaoEditar(e.target, tipoCampo, mensagemCampo, "cliente");
             })
             cliente.append(botaoDeletar);
             cliente.append(botaoEditar);
@@ -677,20 +624,25 @@ function listarProdutos(objeto, styleDiv = "display: flex; flex-direction: row; 
             let botaoEditar = document.createElement("button");
             botaoDeletar.innerText = "Deletar";
             botaoEditar.innerText = "Editar";
-            botaoDeletar.addEventListener("click", function (e){
+            botaoDeletar.addEventListener("click", function (e) {
                 let elemento = e.target;
                 let paiElemento = elemento.parentElement;
                 let filhos = paiElemento.children;
                 let id
-                for(filho of filhos){
-                    if(filho.className == "id"){
+                for (filho of filhos) {
+                    if (filho.className == "id") {
                         id = filho.innerText
                     }
                 }
-                removerProduto(id).then(response =>{
+                removerProduto(id).then(response => {
                     listarProdutos(paiElemento.parentElement);
                 });
-                
+
+            })
+            botaoEditar.addEventListener("click", function (e) {
+                let tipoCampo = ["text", "number", "number"];
+                let mensagemCampo = ["Nome:", "Quantidade no estoque:", "Preço:"];
+                funcaoEditar(e.target, tipoCampo, mensagemCampo, "produto");
             })
             produto.append(botaoDeletar);
             produto.append(botaoEditar);
@@ -725,20 +677,25 @@ function listarCompras(objeto, styleDiv = "display: flex; flex-direction: row; g
             let botaoEditar = document.createElement("button");
             botaoDeletar.innerText = "Deletar";
             botaoEditar.innerText = "Editar";
-            botaoDeletar.addEventListener("click", function (e){
+            botaoDeletar.addEventListener("click", function (e) {
                 let elemento = e.target;
                 let paiElemento = elemento.parentElement;
                 let filhos = paiElemento.children;
                 let id
-                for(filho of filhos){
-                    if(filho.className == "id"){
+                for (filho of filhos) {
+                    if (filho.className == "id") {
                         id = filho.innerText
                     }
                 }
-                removerCompra(id).then(response =>{
+                removerCompra(id).then(response => {
                     listarCompras(paiElemento.parentElement);
                 });
-                
+
+            })
+            botaoEditar.addEventListener("click", function (e) {
+                let tipoCampo = ["text", "text", "text", "text", "text", "text", "text", "text", "text"];
+                let mensagemCampo = ["Nome:", "Nome de usuario:", "Estado abreviado:", "Cidade:", "Bairro:", "Rua:", "Numero do cartão:", "Numero de segurança do cartão:", "Nome do cartão:", "Data de validade do cartão:"];
+                funcaoEditar(e.target, tipoCampo, mensagemCampo, "cliente");
             })
             compra.append(botaoDeletar);
             compra.append(botaoEditar);
@@ -773,20 +730,25 @@ function listarProdutosCompras(objeto, styleDiv = "display: flex; flex-direction
             let botaoEditar = document.createElement("button");
             botaoDeletar.innerText = "Deletar";
             botaoEditar.innerText = "Editar";
-            botaoDeletar.addEventListener("click", function (e){
+            botaoDeletar.addEventListener("click", function (e) {
                 let elemento = e.target;
                 let paiElemento = elemento.parentElement;
                 let filhos = paiElemento.children;
                 let id
-                for(filho of filhos){
-                    if(filho.className == "id"){
+                for (filho of filhos) {
+                    if (filho.className == "id") {
                         id = filho.innerText
                     }
                 }
-                removerProdutoCompra(id).then(response =>{
+                removerProdutoCompra(id).then(response => {
                     listarProdutosCompras(paiElemento.parentElement);
                 });
-                
+
+            })
+            botaoEditar.addEventListener("click", function (e) {
+                let tipoCampo = ["text", "text", "text", "text", "text", "text", "text", "text", "text"];
+                let mensagemCampo = ["Nome:", "Nome de usuario:", "Estado abreviado:", "Cidade:", "Bairro:", "Rua:", "Numero do cartão:", "Numero de segurança do cartão:", "Nome do cartão:", "Data de validade do cartão:"];
+                funcaoEditar(e.target, tipoCampo, mensagemCampo, "cliente");
             })
             produtosCompra.append(botaoDeletar);
             produtosCompra.append(botaoEditar);
@@ -827,15 +789,15 @@ function inserirCliente(nome, nome_usuario, estado, cidade, bairro, rua, nro_car
     return (addCliente(nome, nome_usuario, estado, cidade, bairro, rua, nro_cartao, nro_seguranca, nome_cartao, data_validade_cartao));
 }
 
-function inserirProduto(nome, qtdEstoque, preco, descricao){
+function inserirProduto(nome, qtdEstoque, preco, descricao) {
     return (addProduto(nome, qtdEstoque, preco, descricao));
 }
 
-function inserirCompra(idCliente, dataCompra){
+function inserirCompra(idCliente, dataCompra) {
     return (addCompra(idCliente, dataCompra));
 }
 
-function inserirProdutosCompra(idCompra, idProduto, qtdProduto){
+function inserirProdutosCompra(idCompra, idProduto, qtdProduto) {
     return (addProdutosCompra(idCompra, idProduto, qtdProduto));
 }
 
@@ -912,38 +874,380 @@ botaoInserirProdutoCompra.addEventListener("click", function (e) {
 //Função editar/
 ////////////////
 
-function editarCliente(id, nome, nome_usuario, estado, cidade, bairro, rua, nro_cartao, nro_seguranca, nome_cartao, data_validade_cartao){
-    return(putCliente(id, nome, nome_usuario, estado, cidade, bairro, rua, nro_cartao, nro_seguranca, nome_cartao, data_validade_cartao));
+////////////////
+//botões////////
+////////////////
+
+function funcaoEditar(botao, tipoCampo, mensagemCampo, tipo) {
+    console.log(botao);
+    console.log(botao.parentElement);
+    let filhos = botao.parentElement.children;
+    let formulario = document.createElement("form");
+    let contador = 0;
+    let divID = document.createElement("div");
+    divID.className = filhos[0].className;
+    divID.innerText = filhos[0].innerText;
+    divID.hidden = true;
+    formulario.append(divID);
+    for (filho of filhos) {
+        if (tipo == "cliente") {
+            if (filho.tagName != "BUTTON" && filho.className != "id") {
+                let mensagem = document.createElement("label");
+                let campo = document.createElement("input");
+                mensagem.for = filho.className;
+                mensagem.innerText = mensagemCampo[contador];
+                campo.name = filho.className;
+                campo.type = tipoCampo[contador];
+                campo.value = filho.innerText;
+                formulario.append(mensagem);
+                formulario.append(document.createElement("br"));
+                formulario.append(campo);
+                formulario.append(document.createElement("br"));
+                contador += 1;
+            }
+        } else if (tipo == "produto") {
+            if (filho.tagName != "BUTTON" && filho.className != "id" && filho.className != "descricao") {
+                let mensagem = document.createElement("label");
+                let campo = document.createElement("input");
+                mensagem.for = filho.className;
+                mensagem.innerText = mensagemCampo[contador];
+                campo.name = filho.className;
+                campo.type = tipoCampo[contador];
+                campo.value = filho.innerText;
+                formulario.append(mensagem);
+                formulario.append(document.createElement("br"));
+                formulario.append(campo);
+                formulario.append(document.createElement("br"));
+                contador += 1;
+            } else if (filho.className == "descricao") {
+                let mensagem = document.createElement("label");
+                let campo = document.createElement("textarea");
+                mensagem.for = filho.className;
+                mensagem.innerText = "Descrição do produto:";
+                campo.name = filho.className;
+                campo.cols = "30";
+                campo.rows = "10";
+                campo.value = filho.innerText;
+                formulario.append(mensagem);
+                formulario.append(document.createElement("br"));
+                formulario.append(campo);
+                formulario.append(document.createElement("br"));
+                contador += 1;
+            }
+        } else if (tipo == "compra") {
+
+        } else if (tipo == "produtoCompra") {
+
+        }
+    }
+    let botaoEnviar = document.createElement("button");
+    let botaoCancelar = document.createElement("button");
+    botaoEnviar.innerText = "Enviar";
+    botaoCancelar.innerText = "Cancelar";
+    botaoEnviar.type = "button";
+    botaoCancelar.type = "button";
+    botaoEnviar.addEventListener("click", function (e) {
+        let paiElemento = e.target.parentElement;
+        console.log(paiElemento);
+        let filhos = paiElemento.children;
+        let vetorParametros = [filhos[0].innerText];
+        for (filho of filhos) {
+            if (filho.tagName == "INPUT" || filho.tagName == "TEXTAREA") {
+                vetorParametros.push(filho.value);
+                console.log(vetorParametros);
+            }
+        }
+        if (tipo == "cliente") {
+            editarCliente(vetorParametros[0], vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4], vetorParametros[5], vetorParametros[6], vetorParametros[7], vetorParametros[8], vetorParametros[9], vetorParametros[10], vetorParametros[11]).then(resposta => {
+                listarClientes(paiElemento.parentElement.parentElement);
+            })
+        }
+        if (tipo == "produto") {
+            editarProduto(vetorParametros[0], vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4]).then(resposta => {
+                listarProdutos(paiElemento.parentElement.parentElement);
+            })
+        }
+        if (tipo == "compra") {
+            editarCompra(vetorParametros[0], vetorParametros[1], vetorParametros[2]).then(resposta => {
+                listarCompras(paiElemento.parentElement.parentElement);
+            })
+        }
+        if (tipo == "produtoCompra") {
+            editarProdutoCompra(vetorParametros[0], vetorParametros[1], vetorParametros[2], vetorParametros[3]).then(resposta => {
+                listarProdutosCompras(paiElemento.parentElement.parentElement);
+            })
+        }
+    })
+    botaoCancelar.addEventListener("click", function (e) {
+        if (tipo == "cliente") {
+            listarClientes(e.target.parentElement.parentElement.parentElement);
+        }
+        if (tipo == "produto") {
+            listarProdutos(e.target.parentElement.parentElement.parentElement);
+        }
+        if (tipo == "compra") {
+            listarCompras(e.target.parentElement.parentElement.parentElement);
+        }
+        if (tipo == "produtoCompra") {
+            listarProdutosCompras(e.target.parentElement.parentElement.parentElement);
+        }
+    })
+    formulario.append(botaoEnviar);
+    formulario.append(botaoCancelar);
+    let elementoPai = botao.parentElement;
+    while (elementoPai.children.length > 0) {
+        elementoPai.removeChild(elementoPai.children[elementoPai.children.length - 1]);
+    }
+    elementoPai.append(formulario);
 }
 
-function editarProduto(id, nome, qtdEstoque, preco, descricao){
-    return(putProduto(id, nome, qtdEstoque, preco, descricao));
+function funcaoEditarEspecifico(id, botao, tipoCampo, mensagemCampo, tipo){
+    console.log(botao);
+    console.log(botao.parentElement);
+    let filhos = botao.parentElement.children;
+    let formulario = document.createElement("form");
+    let contador = 0;
+    let divID = document.createElement("div");
+    divID.className = filhos[0].className;
+    divID.innerText = filhos[0].innerText;
+    divID.hidden = true;
+    formulario.append(divID);
+    for (filho of filhos) {
+        if (tipo == "cliente") {
+            if (filho.tagName != "BUTTON" && filho.className != "id") {
+                let mensagem = document.createElement("label");
+                let campo = document.createElement("input");
+                mensagem.for = filho.className;
+                mensagem.innerText = mensagemCampo[contador];
+                campo.name = filho.className;
+                campo.type = tipoCampo[contador];
+                campo.value = filho.innerText;
+                formulario.append(mensagem);
+                formulario.append(document.createElement("br"));
+                formulario.append(campo);
+                formulario.append(document.createElement("br"));
+                contador += 1;
+            }
+        } else if (tipo == "produto") {
+            if (filho.tagName != "BUTTON" && filho.className != "id" && filho.className != "descricao") {
+                let mensagem = document.createElement("label");
+                let campo = document.createElement("input");
+                mensagem.for = filho.className;
+                mensagem.innerText = mensagemCampo[contador];
+                campo.name = filho.className;
+                campo.type = tipoCampo[contador];
+                campo.value = filho.innerText;
+                formulario.append(mensagem);
+                formulario.append(document.createElement("br"));
+                formulario.append(campo);
+                formulario.append(document.createElement("br"));
+                contador += 1;
+            } else if (filho.className == "descricao") {
+                let mensagem = document.createElement("label");
+                let campo = document.createElement("textarea");
+                mensagem.for = filho.className;
+                mensagem.innerText = "Descrição do produto:";
+                campo.name = filho.className;
+                campo.cols = "30";
+                campo.rows = "10";
+                campo.value = filho.innerText;
+                formulario.append(mensagem);
+                formulario.append(document.createElement("br"));
+                formulario.append(campo);
+                formulario.append(document.createElement("br"));
+                contador += 1;
+            }
+        } else if (tipo == "compra") {
+
+        } else if (tipo == "produtoCompra") {
+
+        }
+    }
+    let botaoEnviar = document.createElement("button");
+    let botaoCancelar = document.createElement("button");
+    botaoEnviar.innerText = "Enviar";
+    botaoCancelar.innerText = "Cancelar";
+    botaoEnviar.type = "button";
+    botaoCancelar.type = "button";
+    botaoEnviar.addEventListener("click", function (e) {
+        let paiElemento = e.target.parentElement;
+        console.log(paiElemento);
+        let filhos = paiElemento.children;
+        let vetorParametros = [filhos[0].innerText];
+        for (filho of filhos) {
+            if (filho.tagName == "INPUT" || filho.tagName == "TEXTAREA") {
+                vetorParametros.push(filho.value);
+                console.log(vetorParametros);
+            }
+        }
+        if (tipo == "cliente") {
+            editarCliente(vetorParametros[0], vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4], vetorParametros[5], vetorParametros[6], vetorParametros[7], vetorParametros[8], vetorParametros[9], vetorParametros[10], vetorParametros[11]).then(resposta => {
+                listarClienteEspecifico(id, e.target.parentElement.parentElement.parentElement);
+            })
+        }
+        if (tipo == "produto") {
+            editarProduto(vetorParametros[0], vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4]).then(resposta => {
+                listarProdutos(paiElemento.parentElement.parentElement);
+            })
+        }
+        if (tipo == "compra") {
+            editarCompra(vetorParametros[0], vetorParametros[1], vetorParametros[2]).then(resposta => {
+                listarCompras(paiElemento.parentElement.parentElement);
+            })
+        }
+        if (tipo == "produtoCompra") {
+            editarProdutoCompra(vetorParametros[0], vetorParametros[1], vetorParametros[2], vetorParametros[3]).then(resposta => {
+                listarProdutosCompras(paiElemento.parentElement.parentElement);
+            })
+        }
+    })
+    botaoCancelar.addEventListener("click", function (e) {
+        if (tipo == "cliente") {
+            listarClienteEspecifico(id, e.target.parentElement.parentElement.parentElement);
+        }
+        if (tipo == "produto") {
+            listarProdutos(id, e.target.parentElement.parentElement.parentElement);
+        }
+        if (tipo == "compra") {
+            listarCompras(id, e.target.parentElement.parentElement.parentElement);
+        }
+        if (tipo == "produtoCompra") {
+            listarProdutosCompras(id, e.target.parentElement.parentElement.parentElement);
+        }
+    })
+    formulario.append(botaoEnviar);
+    formulario.append(botaoCancelar);
+    let elementoPai = botao.parentElement;
+    while (elementoPai.children.length > 0) {
+        elementoPai.removeChild(elementoPai.children[elementoPai.children.length - 1]);
+    }
+    elementoPai.append(formulario);
 }
 
-function editarCompra(id, idCliente, dataCompra){
-    return(putCompra(id, idCliente, dataCompra));
+////////////////
+//funções///////
+////////////////
+
+function editarCliente(id, nome, nome_usuario, estado, cidade, bairro, rua, nro_cartao, nro_seguranca, nome_cartao, data_validade_cartao) {
+    return (putCliente(id, nome, nome_usuario, estado, cidade, bairro, rua, nro_cartao, nro_seguranca, nome_cartao, data_validade_cartao));
 }
 
-function editarProdutoCompra(id, idCompra, idProduto, qtdProduto){
-    return(putProdutosCompra(id, idCompra, idProduto, qtdProduto));
+function editarProduto(id, nome, qtdEstoque, preco, descricao) {
+    return (putProduto(id, nome, qtdEstoque, preco, descricao));
+}
+
+function editarCompra(id, idCliente, dataCompra) {
+    return (putCompra(id, idCliente, dataCompra));
+}
+
+function editarProdutoCompra(id, idCompra, idProduto, qtdProduto) {
+    return (putProdutosCompra(id, idCompra, idProduto, qtdProduto));
 }
 
 /////////////////
 //Função deletar/
 /////////////////
 
-function removerCliente(id){
-    return(delCliente(id)); 
+function removerCliente(id) {
+    return (delCliente(id));
 }
 
-function removerProduto(id){
-    return(delProduto(id));
+function removerProduto(id) {
+    return (delProduto(id));
 }
 
-function removerCompra(id){
-    return(delCompra(id));
+function removerCompra(id) {
+    return (delCompra(id));
 }
 
-function removerProdutoCompra(id){
-    return(delProdutosCompra(id));
+function removerProdutoCompra(id) {
+    return (delProdutosCompra(id));
 }
+
+///////////////
+//Listar id////
+///////////////
+
+function listarIdClientes(objeto) {
+    getClientes().then(response => {
+        while (objeto.children.length > 0) {
+            objeto.removeChild(objeto.children[objeto.children.length - 1]);
+        }
+        for (valor of response) {
+            let opcao = document.createElement("option");
+            opcao.value = valor["id"];
+            opcao.innerText = valor["nome_usuario"];
+            objeto.append(opcao);
+        }
+    })
+}
+function listarClienteEspecifico(id, objeto, styleDiv = "display: flex; flex-direction: row; gap: 10px;") {
+    getCliente(id).then(response => {
+        let cliente = document.createElement("div");
+        let vetor = Array();
+        let chaves = Object.keys(response);
+        for (chave of chaves) {
+            let dive = document.createElement("div");
+            dive.className = chave;
+            dive.innerText = response[chave];
+            vetor.push(dive);
+        }
+        for (valor of vetor) {
+            cliente.append(valor);
+        }
+        let botaoDeletar = document.createElement("button");
+        let botaoEditar = document.createElement("button");
+        botaoDeletar.innerText = "Deletar";
+        botaoEditar.innerText = "Editar";
+        botaoDeletar.addEventListener("click", function (e) {
+            let elemento = e.target;
+            let paiElemento = elemento.parentElement;
+            let filhos = paiElemento.children;
+            let id
+            for (filho of filhos) {
+                if (filho.className == "id") {
+                    id = filho.innerText
+                }
+            }
+            removerCliente(id).then(response => {
+                listarClienteEspecifico(id, objeto);
+            });
+
+        })
+        botaoEditar.addEventListener("click", function (e) {
+            let tipoCampo = ["text", "text", "text", "text", "text", "text", "text", "text", "text"];
+            let mensagemCampo = ["Nome:", "Nome de usuario:", "Estado abreviado:", "Cidade:", "Bairro:", "Rua:", "Numero do cartão:", "Numero de segurança do cartão:", "Nome do cartão:", "Data de validade do cartão:"];
+            funcaoEditarEspecifico(id, e.target, tipoCampo, mensagemCampo, "cliente");
+        })
+        cliente.append(botaoDeletar);
+        cliente.append(botaoEditar);
+        cliente.style = styleDiv;
+        if(objeto.children.length > 2){
+            objeto.removeChild(objeto.children[objeto.children.length - 1]);
+        }
+        objeto.append(cliente);
+    })
+}
+
+///////////////
+//Botões///////
+///////////////
+
+let botaoAtualizarClienteEspecifico = document.querySelector(".listarNomeUsuario");
+botaoAtualizarClienteEspecifico.addEventListener("click", function (e) {
+    let elemento = e.target;
+    console.log(elemento.nextElementSibling.nextElementSibling);
+    listarIdClientes(elemento.nextElementSibling.nextElementSibling);
+})
+let botaoListarClienteEspecifico = document.querySelector(".listarClienteEspecifico")
+botaoListarClienteEspecifico.addEventListener("click", function (e){
+    let elemento = e.target;
+    let selecao = elemento.previousElementSibling.previousElementSibling
+    console.log(selecao);
+    console.log(elemento);
+    console.log(selecao.selectedOptions);
+    console.log(selecao.selectedOptions[0]);
+    console.log(selecao.selectedOptions[0].value);
+    let idCliente = selecao.selectedOptions[0].value;
+    listarClienteEspecifico(idCliente, elemento.parentElement.parentElement);
+})
